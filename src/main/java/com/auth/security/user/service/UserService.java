@@ -42,4 +42,10 @@ public class UserService {
         userRepository.delete(userRepository.findUserById(id));
         return userRepository.findUserById(id) == null;
     }
+
+    public String changePassword(User user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return "Success";
+    }
 }
