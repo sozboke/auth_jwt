@@ -27,6 +27,9 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public RegisterResponse register(RegisterRequest request) {
+        if (repository.findUserByEmail(request.getEmail()) != null) {
+            return RegisterResponse.builder().message("This user already exists").build();
+        }
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
