@@ -41,6 +41,7 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         saveUserToken(savedUser, jwtToken);
         return RegisterResponse.builder()
+                .message("Success")
                 .user(savedUser)
                 .build();
     }
