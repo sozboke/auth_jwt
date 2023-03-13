@@ -13,3 +13,20 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+rabbitmq:
+  password: guest
+  queue: rabbitmq.queue
+  max:
+    concurrent:
+      consumers: '1'
+  reply:
+    timeout: '60000'
+  username: guest
+  exchange: rabbitmq.exchange
+  port: '15672'
+  concurrent:
+    consumers: '1'
+  host: localhost
+  virtualhost: /
+  routingkey: rabbitmq.routingkey

@@ -2,8 +2,10 @@ package com.auth.security.user.modal;
 
 import com.auth.security.token.modal.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,21 +23,27 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 @Entity
 @Table(name = "_user")
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty
     private Integer id;
+    @JsonProperty
     private String firstname;
+    @JsonProperty
     private String lastname;
+    @JsonProperty
     private String email;
+    @JsonProperty
     private String password;
-
+    @JsonProperty
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @JsonIgnore
     @OneToOne(mappedBy = "user")
+    @JsonProperty
     private Token token;
 
     @Override
@@ -71,5 +79,15 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstname='" + firstname + '\'' +
+                ", id=" + id +
+                ", lastname=" + lastname +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

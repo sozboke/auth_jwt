@@ -6,6 +6,7 @@ import com.auth.security.user.modal.Role;
 import com.auth.security.user.modal.User;
 import com.auth.security.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,12 +39,17 @@ public class UserService {
     }
 
     public boolean deleteUser(Integer id) {
-        tokenRepository.delete(tokenRepository.findTokenByUserId(id));
-        userRepository.delete(userRepository.findUserById(id));
-        return userRepository.findUserById(id) == null;
+        try {
+            tokenRepository.delete(tokenRepository.findTokenByUserId(id));
+            userRepository.delete(userRepository.findUserById(id));
+            return userRepository.findUserById(id) == null;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public String changePassword(User user, String newPassword) {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         return "Success";
