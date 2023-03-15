@@ -35,7 +35,7 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         AuthenticationResponse authenticationResponse = service.authenticate(request);
-        rabbitMQSender.send((userService.findUser(authenticationResponse.getUser().getEmail())).toString());
+        rabbitMQSender.sendJsonMessage(userService.findUser(authenticationResponse.getUser().getEmail()));
         return ResponseEntity.ok(authenticationResponse);
     }
 }

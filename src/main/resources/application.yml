@@ -17,6 +17,7 @@ spring:
 rabbitmq:
   password: guest
   queue: rabbitmq.queue
+  json: rabbitmq.json_queue
   max:
     concurrent:
       consumers: '1'
@@ -30,3 +31,4 @@ rabbitmq:
   host: localhost
   virtualhost: /
   routingkey: rabbitmq.routingkey
+  routing_json_key: rabbitmq.routing_json_key

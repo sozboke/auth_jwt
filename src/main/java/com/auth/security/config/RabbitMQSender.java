@@ -4,22 +4,26 @@ import com.auth.security.user.modal.User;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RabbitMQSender {
+    @Value("${rabbitmq.exchange}")
+    private String exchange;
 
-    @Autowired
-    private RabbitTemplate template;
+    @Value("${rabbitmq.routing_json_key}")
+    private String routingJsonKey;
 
-    @Autowired
-    private Queue queue;
+    private RabbitTemplate rabbitTemplate;
 
-    @Scheduled(fixedDelay = 1000, initialDelay = 500)
-    public void send(String user) {
-        String message = "Hello World!";
-        template.convertAndSend(queue.getName(), user);
-        System.out.println(" [x] Sent '" + user + "'");
+    public RabbitMQSender(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
+
+    public void sendJsonMessage(User user) {
+        System.out.println("aaaaaaa");
+        rabbitTemplate.convertAndSend(exchange, routingJsonKey, user);
     }
 }

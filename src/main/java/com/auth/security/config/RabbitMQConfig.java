@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFacto
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.ConditionalRejectingErrorHandler;
 import org.springframework.amqp.rabbit.support.ListenerExecutionFailedException;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -21,10 +22,14 @@ import org.springframework.util.ErrorHandler;
 public class RabbitMQConfig {
     @Value("${rabbitmq.queue}")
     private String queueName;
+    @Value("${rabbitmq.json}")
+    private String jsonQueue;
     @Value("${rabbitmq.exchange}")
     private String exchange;
     @Value("${rabbitmq.routingkey}")
     private String routingkey;
+    @Value("${rabbitmq.routing_json_key}")
+    private String routingJsonKey;
     @Value("${rabbitmq.username}")
     private String username;
     @Value("${rabbitmq.password}")
@@ -44,12 +49,20 @@ public class RabbitMQConfig {
         return new Queue(queueName, false);
     }
     @Bean
-    public DirectExchange exchange() {
-        return new DirectExchange(exchange);
+    public Queue jsonQueue() {
+        return new Queue(jsonQueue);
     }
     @Bean
-    public Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingkey);
+    public TopicExchange exchange() {
+        return new TopicExchange(exchange);
+    }
+    @Bean
+    public Binding binding() {
+        return BindingBuilder.bind(queue()).to(exchange()).with(routingkey);
+    }
+    @Bean
+    public Binding jsonBinding() {
+        return BindingBuilder.bind(jsonQueue()).to(exchange()).with(routingJsonKey);
     }
     @Bean
     public MessageConverter jsonMessageConverter() {
@@ -78,6 +91,12 @@ public class RabbitMQConfig {
         factory.setMaxConcurrentConsumers(maxConcurrentConsumers);
         factory.setErrorHandler(errorHandler());
         return factory;
+    }
+    @Bean
+    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(jsonMessageConverter());
+        return rabbitTemplate;
     }
     @Bean
     public ErrorHandler errorHandler() {
