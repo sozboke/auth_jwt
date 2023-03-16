@@ -13,6 +13,19 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+    host: smtp.gmail.com
+    username: servetozboke@gmail.com
+    password: 892670Servet
+    port: 587
+
 
 rabbitmq:
   password: guest
