@@ -5,6 +5,7 @@ import com.auth.security.auth.request.RegisterRequest;
 import com.auth.security.auth.response.AuthenticationResponse;
 import com.auth.security.auth.response.RegisterResponse;
 import com.auth.security.auth.service.AuthenticationService;
+import com.auth.security.config.EmailService;
 import com.auth.security.config.RabbitMQSender;
 import com.auth.security.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,12 @@ public class AuthenticationController {
 
     private final UserService userService;
 
+    private final EmailService emailService;
+
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
         var message = service.register(request);
+        emailService.sendSimpleMessage("beyzaa0204@gmail.com", "Kredi Başvurusu Hk.", "30.000₺ krediniz onaylanmıştır xd");
         return ResponseEntity.ok(message);
     }
 
