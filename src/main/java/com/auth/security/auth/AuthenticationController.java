@@ -32,7 +32,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
         var message = service.register(request);
-        emailService.sendSimpleMessage("beyzaa0204@gmail.com", "Kredi Başvurusu Hk.", "30.000₺ krediniz onaylanmıştır xd");
+        emailService.sendSimpleMessage("beyzaa0204@gmail.com", "Registration", "Success");
         return ResponseEntity.ok(message);
     }
 
