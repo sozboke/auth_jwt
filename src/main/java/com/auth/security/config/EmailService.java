@@ -24,6 +24,7 @@ public class EmailService {
     private JavaMailSender mailSender;
     Properties properties=new Properties();
     Session session=Session.getDefaultInstance(properties);
+    //testt
 
 
 //
