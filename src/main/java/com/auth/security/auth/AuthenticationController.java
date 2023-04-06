@@ -30,13 +30,14 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
         var message = service.register(request);
-        rabbitMQSender.sendJsonMessage(userService.findUser(request.getEmail()));
+        rabbitMQSender.sendRegisterMessage(userService.findUser(request.getEmail()));
         return ResponseEntity.ok(message);
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         AuthenticationResponse authenticationResponse = service.authenticate(request);
+        rabbitMQSender.sendSignupMessage(userService.findUser(request.getEmail()));
         return ResponseEntity.ok(authenticationResponse);
     }
 }

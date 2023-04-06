@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/beyzai
-    username: postgres
-    password: 123456
+    url: jdbc:postgresql://localhost:5432/jwt_security
+    username:
+    password:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -23,14 +23,15 @@ spring:
           auth: true
     host: smtp.gmail.com
     username: servetozboke@gmail.com
-    password: itpzzgibpdurnula
+    password: qafowzjyvsqnmotx
     port: 587
 
 
 rabbitmq:
   password: guest
   queue: rabbitmq.queue
-  json: rabbitmq.json_queue
+  register: rabbitmq.json_register
+  signup: rabbitmq.json_signup
   max:
     concurrent:
       consumers: '1'
@@ -44,4 +45,5 @@ rabbitmq:
   host: localhost
   virtualhost: /
   routingkey: rabbitmq.routingkey
-  routing_json_key: rabbitmq.routing_json_key
+  routing_register_key: rabbitmq.routing_register_key
+  routing_signup_key: rabbitmq.routing_signup_key

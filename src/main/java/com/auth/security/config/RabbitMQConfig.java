@@ -22,14 +22,18 @@ import org.springframework.util.ErrorHandler;
 public class RabbitMQConfig {
     @Value("${rabbitmq.queue}")
     private String queueName;
-    @Value("${rabbitmq.json}")
-    private String jsonQueue;
+    @Value("${rabbitmq.register}")
+    private String routingJsonRegister;
+    @Value("${rabbitmq.signup}")
+    private String routingJsonSignup;
     @Value("${rabbitmq.exchange}")
     private String exchange;
     @Value("${rabbitmq.routingkey}")
     private String routingkey;
-    @Value("${rabbitmq.routing_json_key}")
-    private String routingJsonKey;
+    @Value("${rabbitmq.routing_register_key}")
+    private String routingRegisterKey;
+    @Value("${rabbitmq.routing_signup_key}")
+    private String routingSignupKey;
     @Value("${rabbitmq.username}")
     private String username;
     @Value("${rabbitmq.password}")
@@ -49,8 +53,12 @@ public class RabbitMQConfig {
         return new Queue(queueName, false);
     }
     @Bean
-    public Queue jsonQueue() {
-        return new Queue(jsonQueue);
+    public Queue registerQueue() {
+        return new Queue(routingJsonRegister);
+    }
+    @Bean
+    public Queue signupQueue() {
+        return new Queue(routingJsonSignup);
     }
     @Bean
     public TopicExchange exchange() {
@@ -61,8 +69,12 @@ public class RabbitMQConfig {
         return BindingBuilder.bind(queue()).to(exchange()).with(routingkey);
     }
     @Bean
-    public Binding jsonBinding() {
-        return BindingBuilder.bind(jsonQueue()).to(exchange()).with(routingJsonKey);
+    public Binding registerBinding() {
+        return BindingBuilder.bind(registerQueue()).to(exchange()).with(routingRegisterKey);
+    }
+    @Bean
+    public Binding signupBinding() {
+        return BindingBuilder.bind(signupQueue()).to(exchange()).with(routingSignupKey);
     }
     @Bean
     public MessageConverter jsonMessageConverter() {

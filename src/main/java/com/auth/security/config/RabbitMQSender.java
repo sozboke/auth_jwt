@@ -13,8 +13,11 @@ public class RabbitMQSender {
     @Value("${rabbitmq.exchange}")
     private String exchange;
 
-    @Value("${rabbitmq.routing_json_key}")
-    private String routingJsonKey;
+    @Value("${rabbitmq.routing_register_key}")
+    private String routingRegisterKey;
+
+    @Value("${rabbitmq.routing_signup_key}")
+    private String routingSignupKey;
 
     private RabbitTemplate rabbitTemplate;
 
@@ -22,8 +25,13 @@ public class RabbitMQSender {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendJsonMessage(User user) {
+    public void sendRegisterMessage(User user) {
         System.out.println("aaaaaaa");
-        rabbitTemplate.convertAndSend(exchange, routingJsonKey, user);
+        rabbitTemplate.convertAndSend(exchange, routingRegisterKey, user);
+    }
+
+    public void sendSignupMessage(User user) {
+        System.out.println("bbbbbb");
+        rabbitTemplate.convertAndSend(exchange, routingSignupKey, user);
     }
 }
