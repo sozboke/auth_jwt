@@ -23,7 +23,7 @@ spring:
           auth: true
     host: smtp.gmail.com
     username: servetozboke@gmail.com
-    password: qafowzjyvsqnmotx
+    password:
     port: 587
 
 
